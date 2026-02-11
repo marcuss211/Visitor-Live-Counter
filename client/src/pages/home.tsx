@@ -49,7 +49,7 @@ function useActiveUsers() {
         }
       } catch {
       }
-    }, 45000);
+    }, 10000);
   }, [handleNewData]);
 
   const connectSSE = useCallback(() => {

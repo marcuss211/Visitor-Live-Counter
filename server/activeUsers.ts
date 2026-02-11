@@ -1,7 +1,7 @@
 import type { Response } from "express";
 import { log } from "./index";
 
-const SLOT_LENGTH_MS = 45000;
+const SLOT_LENGTH_MS = 10000;
 
 interface HourRange {
   min: number;
