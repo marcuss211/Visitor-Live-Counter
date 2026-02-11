@@ -1,0 +1,114 @@
+You are a senior full-stack engineer. Build a production-ready “Live Active Users” counter for an iGaming site using a real backend + database/cache, so ALL users/devices see the EXACT SAME number at the SAME moment.
+
+DELIVERABLES
+1) A working Replit project (full code) with:
+   - Frontend: single HTML page (index.html) with embedded CSS + JS (same UI structure below).
+   - Backend: Node.js + Express (or Fastify) API.
+   - Shared state: Redis preferred (or PostgreSQL if Redis not available). Use DB/cache to store the “current active users” value and the current 45-second slot.
+   - Realtime delivery: Server-Sent Events (SSE) or WebSocket so clients update in sync. (If SSE/WebSocket not available, fallback to client polling every 45s but the server must still be the source of truth.)
+
+2) Provide clear run instructions (npm install, npm start, env vars).
+
+UI REQUIREMENTS (KEEP EXACT STRUCTURE)
+Use this exact HTML/CSS base and replace only the <span class="number">12.458</span> with dynamic content via JS:
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Active Users Counter</title>
+  <style>
+    body { margin:0; padding:0; background:#0d0d0d; color:#e0e0e0; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif; min-height:100vh; display:flex; flex-direction:column; align-items:center; }
+    .fake-slider { width:100%; height:180px; background:linear-gradient(135deg,#1a0033,#330066); display:flex; align-items:center; justify-content:center; font-size:1.4rem; color:#ffd700; margin-bottom:0; }
+    .live-users { margin:18px auto 24px; padding:10px 28px; background:rgba(20,20,20,0.82); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px); border-radius:999px; border:1px solid rgba(255,215,0,0.28); box-shadow:0 0 12px rgba(255,215,0,0.35), inset 0 1px 3px rgba(255,255,255,0.06); color:#ffd700; font-size:15px; font-weight:500; white-space:nowrap; width:fit-content; max-width:94vw; display:flex; align-items:center; gap:8px; animation:subtle-pulse 4s infinite ease-in-out; }
+    .live-users .number { color:#ffff00; font-weight:700; font-size:16px; transition:color 0.8s; }
+    .live-users .pulse-dot { width:8px; height:8px; background:#00ff9d; border-radius:50%; box-shadow:0 0 10px #00ff9d; animation:blink 1.6s infinite; }
+    @keyframes subtle-pulse { 0%,100%{ box-shadow:0 0 12px rgba(255,215,0,0.35);} 50%{ box-shadow:0 0 20px rgba(255,215,0,0.55);} }
+    @keyframes blink { 0%,100%{opacity:0.4;} 50%{opacity:1;} }
+    .fake-promo { width:100%; height:140px; background:#111; margin-top:16px; display:flex; align-items:center; justify-content:center; color:#888; }
+    .glow-green { color:#00ff9d !important; }
+  </style>
+</head>
+<body>
+  <div style="width:100%; height:60px; background:#000; display:flex; align-items:center; justify-content:center; color:#ffd700;">
+    VEVOB AHİS Header
+  </div>
+  <div class="fake-slider">Ana Slider / Carousel burada</div>
+  <div class="live-users">
+    <span class="pulse-dot"></span>
+    Şu anda sitede aktif:
+    <span class="number">12.458</span>
+    kullanıcı
+  </div>
+  <div class="fake-promo">1000 Free Spin + Turnuva Bannerları burada</div>
+
+  <script>
+    // Implement JS here (client consumes server value)
+  </script>
+</body>
+</html>
+
+BACKEND TIME + SYNC REQUIREMENTS
+- The server is the single source of truth for:
+  (a) current “active users” value
+  (b) the current 45-second time slot boundary
+- Timezone must be Turkey: Europe/Istanbul (server-side).
+- All clients must show the same number for the same 45-second slot.
+- The server must broadcast the new number exactly at each slot boundary (every 45 seconds).
+
+NUMBER LOGIC (SERVER-SIDE)
+1) Compute Istanbul time (hour, minute, second, weekday) using a timezone-safe library:
+   - Node: luxon OR date-fns-tz OR Intl with timeZone, but MUST be correct.
+2) Hour ranges (use exact min/max/base):
+   - 00:00–03:00 → min 2800, max 4200, base 3500
+   - 03:00–06:00 → min 900, max 1800, base 1350
+   - 06:00–09:00 → min 1300, max 2200, base 1750
+   - 09:00–12:00 → min 1900, max 3000, base 2450
+   - 12:00–15:00 → min 2400, max 3500, base 2950
+   - 15:00–18:00 → min 3000, max 4200, base 3600
+   - 18:00–20:00 → min 3800, max 5000, base 4400
+   - 20:00–23:00 → min 4500, max 5800, base 5150
+   - 23:00–00:00 → min 3400, max 4600, base 4000
+3) Weekend boost (Istanbul weekday): Sat or Sun multiply min/max/base by 1.2 before fluctuation.
+4) Deterministic fluctuation (no random):
+   fluctuation = sin((hour*60 + minute)*0.07)*250 + cos((minute*60 + second)*0.03)*150
+   displayed = round(base + fluctuation)
+   clamp into [min, max]
+   minimum overall = max(900, displayed)
+
+SLOT + STORAGE RULES
+- Slot length: 45,000 ms.
+- Slot key: floor(serverEpochMs / 45000).
+- For each slot:
+  - compute the displayed number once
+  - store it in Redis/DB with the slot key
+  - broadcast to all clients via SSE/WebSocket
+- If the server restarts, it must:
+  - read the last stored slot/value
+  - compute current slot/value if missing
+  - continue broadcasting on boundaries
+
+API / REALTIME ENDPOINTS
+- GET /api/active-users -> returns JSON: { value: number, slotKey: string|number, serverTime: ISO, tz: "Europe/Istanbul" }
+- SSE: GET /events (text/event-stream) OR WebSocket /ws
+  - push messages: { value, slotKey, serverTime }
+
+FRONTEND BEHAVIOR
+- On load:
+  - connect to SSE/WebSocket
+  - immediately render the last value
+- If realtime connection fails, fallback to polling /api/active-users every 45s.
+- Format number with Turkish separators: value.toLocaleString('tr-TR')
+- Glow effect:
+  - if new value > previous, add 'glow-green' to .number for 1500ms then remove.
+- Fully responsive; no JS errors.
+
+SECURITY + RELIABILITY (LIGHTWEIGHT)
+- Add simple rate limiting for /api/active-users and /events.
+- Add basic health check: GET /health -> 200 OK.
+- Add minimal logging (slot ticks, broadcast count).
+
+OUTPUT
+- Print the full project file tree and full code contents (server + frontend).
+- Ensure it runs on Replit without manual steps beyond installing dependencies and setting env vars.
