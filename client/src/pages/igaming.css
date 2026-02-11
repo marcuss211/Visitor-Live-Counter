@@ -124,57 +124,60 @@
 
 /* ── LIVE USERS PILL ── */
 .live-users {
-  margin: 14px auto 16px;
-  padding: 8px 14px;
+  margin: clamp(10px, 3vw, 24px) auto;
+  padding: clamp(6px, 2vw, 12px) clamp(10px, 3.5vw, 36px);
   background: rgba(20, 20, 20, 0.82);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   border-radius: 999px;
   border: 1px solid rgba(255, 215, 0, 0.28);
-  box-shadow: 0 0 12px rgba(255, 215, 0, 0.35), inset 0 1px 3px rgba(255, 255, 255, 0.06);
+  box-shadow: 0 0 clamp(8px, 2.5vw, 12px) rgba(255, 215, 0, 0.35), inset 0 1px 3px rgba(255, 255, 255, 0.06);
   color: #ffd700;
-  font-size: 0.8125rem;
+  font-size: clamp(0.6875rem, 2.8vw, 1.0625rem);
   font-weight: 500;
   white-space: nowrap;
   width: fit-content;
-  max-width: calc(100vw - 2rem);
+  max-width: calc(100vw - 1.5rem);
+  max-width: calc(100vw - 1.5rem - env(safe-area-inset-left, 0px) - env(safe-area-inset-right, 0px));
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: clamp(4px, 1.5vw, 10px);
   animation: subtle-pulse 4s infinite ease-in-out;
   transition: box-shadow 0.4s ease;
+  padding-left: max(clamp(10px, 3.5vw, 36px), env(safe-area-inset-left, 0px));
+  padding-right: max(clamp(10px, 3.5vw, 36px), env(safe-area-inset-right, 0px));
 }
 
 .live-users--glowing {
-  box-shadow: 0 0 24px rgba(0, 255, 157, 0.5), 0 0 12px rgba(255, 215, 0, 0.35), inset 0 1px 3px rgba(255, 255, 255, 0.06);
+  box-shadow: 0 0 clamp(16px, 5vw, 24px) rgba(0, 255, 157, 0.5), 0 0 clamp(8px, 2.5vw, 12px) rgba(255, 215, 0, 0.35), inset 0 1px 3px rgba(255, 255, 255, 0.06);
 }
 
 .live-users .number {
   color: #ffff00;
   font-weight: 700;
-  font-size: 0.875rem;
+  font-size: clamp(0.8125rem, 3.2vw, 1.25rem);
   transition: color 0.8s, text-shadow 0.4s;
-  min-width: 40px;
+  min-width: clamp(36px, 10vw, 60px);
   text-align: center;
 }
 
 .live-users .pulse-dot {
-  width: 8px;
-  height: 8px;
+  width: clamp(6px, 2vw, 10px);
+  height: clamp(6px, 2vw, 10px);
   background: #00ff9d;
   border-radius: 50%;
-  box-shadow: 0 0 10px #00ff9d;
+  box-shadow: 0 0 clamp(6px, 2vw, 10px) #00ff9d;
   animation: blink 1.6s infinite;
   flex-shrink: 0;
 }
 
 .live-users-label {
-  font-size: 0.75rem;
+  font-size: clamp(0.625rem, 2.6vw, 1rem);
 }
 
 .glow-green {
   color: #00ff9d !important;
-  text-shadow: 0 0 12px rgba(0, 255, 157, 0.6);
+  text-shadow: 0 0 clamp(8px, 3vw, 12px) rgba(0, 255, 157, 0.6);
 }
 
 @keyframes subtle-pulse {
@@ -309,21 +312,6 @@
     font-size: 1.2rem;
   }
 
-  .live-users {
-    padding: 10px 20px;
-    font-size: 0.875rem;
-    gap: 8px;
-  }
-
-  .live-users .number {
-    font-size: 1rem;
-    min-width: 48px;
-  }
-
-  .live-users-label {
-    font-size: 0.8125rem;
-  }
-
   .promo-card {
     padding: 16px;
   }
@@ -347,19 +335,6 @@
 
   .slider-title {
     font-size: 1.35rem;
-  }
-
-  .live-users {
-    padding: 10px 28px;
-    font-size: 0.9375rem;
-  }
-
-  .live-users .number {
-    font-size: 1.0625rem;
-  }
-
-  .live-users-label {
-    font-size: 0.875rem;
   }
 
   .fake-promo {
@@ -415,22 +390,6 @@
 
   .slider-desc {
     font-size: 0.9rem;
-  }
-
-  .live-users {
-    margin: 20px auto 28px;
-    padding: 12px 32px;
-    font-size: 1rem;
-    gap: 10px;
-  }
-
-  .live-users .number {
-    font-size: 1.125rem;
-    min-width: 56px;
-  }
-
-  .live-users-label {
-    font-size: 0.9375rem;
   }
 
   .fake-promo {
@@ -512,22 +471,6 @@
 
   .slider-content {
     gap: 10px;
-  }
-
-  .live-users {
-    margin: 24px auto 32px;
-    padding: 12px 36px;
-    font-size: 1.0625rem;
-    gap: 10px;
-  }
-
-  .live-users .number {
-    font-size: 1.25rem;
-    min-width: 60px;
-  }
-
-  .live-users-label {
-    font-size: 1rem;
   }
 
   .fake-promo {
