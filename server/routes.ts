@@ -25,11 +25,11 @@ function checkRateLimit(ip: string): boolean {
 
 setInterval(() => {
   const now = Date.now();
-  for (const [ip, entry] of rateLimitMap) {
+  Array.from(rateLimitMap.entries()).forEach(([ip, entry]) => {
     if (now > entry.resetAt) {
       rateLimitMap.delete(ip);
     }
-  }
+  });
 }, 60000);
 
 export async function registerRoutes(

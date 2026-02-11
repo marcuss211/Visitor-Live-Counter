@@ -138,14 +138,14 @@ function broadcastToClients(data: SlotData): void {
   const payload = `data: ${JSON.stringify(data)}\n\n`;
   let activeCount = 0;
 
-  for (const client of sseClients) {
+  Array.from(sseClients).forEach((client) => {
     try {
       client.write(payload);
       activeCount++;
     } catch {
       sseClients.delete(client);
     }
-  }
+  });
 
   log(`Slot ${data.slotKey} | Value: ${data.value} | Broadcast to ${activeCount} clients`, "active-users");
 }
