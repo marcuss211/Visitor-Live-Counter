@@ -1,3 +1,9 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 .igaming-page {
   margin: 0;
   padding: 0;
@@ -5,50 +11,60 @@
   color: #e0e0e0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   min-height: 100vh;
+  min-height: 100dvh;
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 100%;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
+/* ── HEADER ── */
 .igaming-header {
   width: 100%;
-  height: 60px;
+  min-height: 52px;
   background: #000;
   display: flex;
   align-items: center;
   justify-content: center;
   border-bottom: 1px solid rgba(255, 215, 0, 0.15);
+  padding: 0 1rem;
+  position: sticky;
+  top: 0;
+  z-index: 100;
 }
 
 .header-inner {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
 }
 
 .header-logo {
   color: #ffd700;
-  font-size: 1.4rem;
+  font-size: 1.2rem;
   font-weight: 800;
-  letter-spacing: 3px;
+  letter-spacing: 2px;
 }
 
 .header-divider {
   color: rgba(255, 215, 0, 0.3);
-  font-size: 1.2rem;
+  font-size: 1rem;
 }
 
 .header-subtitle {
   color: rgba(255, 215, 0, 0.7);
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   font-weight: 500;
-  letter-spacing: 2px;
+  letter-spacing: 1.5px;
 }
 
+/* ── SLIDER / HERO ── */
 .fake-slider {
   width: 100%;
-  height: 200px;
+  height: 140px;
   background: linear-gradient(135deg, #1a0033 0%, #330066 40%, #1a0044 100%);
   display: flex;
   align-items: center;
@@ -77,36 +93,39 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
+  padding: 0 1rem;
 }
 
 .slider-badge {
   background: rgba(255, 0, 60, 0.9);
   color: #fff;
-  font-size: 10px;
+  font-size: 0.625rem;
   font-weight: 700;
   letter-spacing: 2px;
-  padding: 3px 12px;
+  padding: 3px 10px;
   border-radius: 3px;
   text-transform: uppercase;
 }
 
 .slider-title {
   color: #ffd700;
-  font-size: 1.4rem;
+  font-size: 1.1rem;
   font-weight: 600;
   margin: 0;
+  line-height: 1.3;
 }
 
 .slider-desc {
   color: rgba(255, 255, 255, 0.5);
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   margin: 0;
 }
 
+/* ── LIVE USERS PILL ── */
 .live-users {
-  margin: 18px auto 24px;
-  padding: 10px 28px;
+  margin: 14px auto 16px;
+  padding: 8px 14px;
   background: rgba(20, 20, 20, 0.82);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
@@ -114,14 +133,14 @@
   border: 1px solid rgba(255, 215, 0, 0.28);
   box-shadow: 0 0 12px rgba(255, 215, 0, 0.35), inset 0 1px 3px rgba(255, 255, 255, 0.06);
   color: #ffd700;
-  font-size: 15px;
+  font-size: 0.8125rem;
   font-weight: 500;
   white-space: nowrap;
   width: fit-content;
-  max-width: 94vw;
+  max-width: calc(100vw - 2rem);
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   animation: subtle-pulse 4s infinite ease-in-out;
   transition: box-shadow 0.4s ease;
 }
@@ -133,9 +152,9 @@
 .live-users .number {
   color: #ffff00;
   font-weight: 700;
-  font-size: 16px;
+  font-size: 0.875rem;
   transition: color 0.8s, text-shadow 0.4s;
-  min-width: 50px;
+  min-width: 40px;
   text-align: center;
 }
 
@@ -150,7 +169,7 @@
 }
 
 .live-users-label {
-  font-size: 14px;
+  font-size: 0.75rem;
 }
 
 .glow-green {
@@ -172,43 +191,44 @@
   50% { opacity: 1; }
 }
 
+/* ── PROMO SECTION ── */
 .fake-promo {
   width: 100%;
-  padding: 20px 16px;
+  padding: 16px 12px;
   background: #111;
 }
 
 .promo-grid {
   display: flex;
-  gap: 12px;
-  max-width: 800px;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 900px;
   margin: 0 auto;
-  flex-wrap: wrap;
-  justify-content: center;
+  width: 100%;
 }
 
 .promo-card {
-  flex: 1;
-  min-width: 200px;
-  max-width: 260px;
+  width: 100%;
   background: rgba(20, 20, 20, 0.9);
   border: 1px solid rgba(255, 255, 255, 0.06);
   border-radius: 8px;
-  padding: 16px;
+  padding: 14px;
   display: flex;
   align-items: center;
   gap: 12px;
+  min-height: 56px;
   transition: border-color 0.3s;
+  -webkit-tap-highlight-color: transparent;
 }
 
-.promo-card:hover {
-  border-color: rgba(255, 215, 0, 0.2);
+.promo-card:active {
+  border-color: rgba(255, 215, 0, 0.25);
 }
 
 .promo-icon-wrapper {
-  width: 40px;
-  height: 40px;
-  border-radius: 8px;
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -234,22 +254,26 @@
   display: flex;
   flex-direction: column;
   gap: 2px;
+  min-width: 0;
 }
 
 .promo-card-title {
   color: #e0e0e0;
-  font-size: 14px;
+  font-size: 0.875rem;
   font-weight: 600;
+  line-height: 1.3;
 }
 
 .promo-card-desc {
   color: #888;
-  font-size: 12px;
+  font-size: 0.75rem;
+  line-height: 1.3;
 }
 
+/* ── FOOTER ── */
 .igaming-footer {
   margin-top: auto;
-  padding: 20px;
+  padding: 16px 1rem;
   width: 100%;
   text-align: center;
   border-top: 1px solid rgba(255, 255, 255, 0.06);
@@ -257,33 +281,313 @@
 
 .footer-text {
   color: #555;
-  font-size: 12px;
+  font-size: 0.75rem;
 }
 
-@media (max-width: 600px) {
+/* ═══════════════════════════════════════════════
+   BREAKPOINT: Standard phones (390px+)
+   ═══════════════════════════════════════════════ */
+@media (min-width: 390px) {
+  .igaming-header {
+    min-height: 56px;
+  }
+
+  .header-logo {
+    font-size: 1.3rem;
+    letter-spacing: 2.5px;
+  }
+
+  .header-subtitle {
+    font-size: 0.85rem;
+  }
+
   .fake-slider {
-    height: 150px;
+    height: 160px;
   }
 
   .slider-title {
-    font-size: 1.1rem;
+    font-size: 1.2rem;
   }
 
   .live-users {
-    padding: 8px 16px;
-    font-size: 13px;
-    gap: 6px;
+    padding: 10px 20px;
+    font-size: 0.875rem;
+    gap: 8px;
   }
 
   .live-users .number {
-    font-size: 14px;
+    font-size: 1rem;
+    min-width: 48px;
   }
 
   .live-users-label {
-    font-size: 12px;
+    font-size: 0.8125rem;
   }
 
   .promo-card {
-    min-width: 100%;
+    padding: 16px;
+  }
+
+  .promo-card-title {
+    font-size: 0.9375rem;
+  }
+
+  .promo-card-desc {
+    font-size: 0.8125rem;
+  }
+}
+
+/* ═══════════════════════════════════════════════
+   BREAKPOINT: Large phones (480px+)
+   ═══════════════════════════════════════════════ */
+@media (min-width: 480px) {
+  .fake-slider {
+    height: 180px;
+  }
+
+  .slider-title {
+    font-size: 1.35rem;
+  }
+
+  .live-users {
+    padding: 10px 28px;
+    font-size: 0.9375rem;
+  }
+
+  .live-users .number {
+    font-size: 1.0625rem;
+  }
+
+  .live-users-label {
+    font-size: 0.875rem;
+  }
+
+  .fake-promo {
+    padding: 20px 16px;
+  }
+
+  .promo-grid {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .promo-card {
+    flex: 1 1 calc(50% - 6px);
+    min-width: 0;
+  }
+}
+
+/* ═══════════════════════════════════════════════
+   BREAKPOINT: Tablets (768px+)
+   ═══════════════════════════════════════════════ */
+@media (min-width: 768px) {
+  .igaming-header {
+    min-height: 60px;
+  }
+
+  .header-logo {
+    font-size: 1.5rem;
+    letter-spacing: 3px;
+  }
+
+  .header-subtitle {
+    font-size: 0.95rem;
+    letter-spacing: 2px;
+  }
+
+  .header-inner {
+    gap: 12px;
+  }
+
+  .fake-slider {
+    height: 220px;
+  }
+
+  .slider-badge {
+    font-size: 0.6875rem;
+    padding: 4px 14px;
+  }
+
+  .slider-title {
+    font-size: 1.5rem;
+  }
+
+  .slider-desc {
+    font-size: 0.9rem;
+  }
+
+  .live-users {
+    margin: 20px auto 28px;
+    padding: 12px 32px;
+    font-size: 1rem;
+    gap: 10px;
+  }
+
+  .live-users .number {
+    font-size: 1.125rem;
+    min-width: 56px;
+  }
+
+  .live-users-label {
+    font-size: 0.9375rem;
+  }
+
+  .fake-promo {
+    padding: 28px 24px;
+  }
+
+  .promo-grid {
+    flex-direction: row;
+    flex-wrap: nowrap;
+    gap: 16px;
+  }
+
+  .promo-card {
+    flex: 1;
+    min-width: 0;
+    padding: 18px;
+  }
+
+  .promo-card:hover {
+    border-color: rgba(255, 215, 0, 0.2);
+  }
+
+  .promo-icon-wrapper {
+    width: 48px;
+    height: 48px;
+  }
+
+  .promo-card-title {
+    font-size: 1rem;
+  }
+
+  .promo-card-desc {
+    font-size: 0.875rem;
+  }
+
+  .igaming-footer {
+    padding: 24px 1.5rem;
+  }
+
+  .footer-text {
+    font-size: 0.8125rem;
+  }
+}
+
+/* ═══════════════════════════════════════════════
+   BREAKPOINT: Desktop (1024px+)
+   ═══════════════════════════════════════════════ */
+@media (min-width: 1024px) {
+  .igaming-header {
+    min-height: 64px;
+  }
+
+  .header-logo {
+    font-size: 1.6rem;
+    letter-spacing: 4px;
+  }
+
+  .header-subtitle {
+    font-size: 1rem;
+    letter-spacing: 3px;
+  }
+
+  .fake-slider {
+    height: 260px;
+  }
+
+  .slider-badge {
+    font-size: 0.75rem;
+    padding: 4px 16px;
+  }
+
+  .slider-title {
+    font-size: 1.75rem;
+  }
+
+  .slider-desc {
+    font-size: 1rem;
+  }
+
+  .slider-content {
+    gap: 10px;
+  }
+
+  .live-users {
+    margin: 24px auto 32px;
+    padding: 12px 36px;
+    font-size: 1.0625rem;
+    gap: 10px;
+  }
+
+  .live-users .number {
+    font-size: 1.25rem;
+    min-width: 60px;
+  }
+
+  .live-users-label {
+    font-size: 1rem;
+  }
+
+  .fake-promo {
+    padding: 36px 32px;
+  }
+
+  .promo-grid {
+    gap: 20px;
+  }
+
+  .promo-card {
+    padding: 20px;
+    border-radius: 10px;
+  }
+
+  .promo-icon-wrapper {
+    width: 52px;
+    height: 52px;
+    border-radius: 12px;
+  }
+
+  .promo-card-title {
+    font-size: 1.0625rem;
+  }
+
+  .promo-card-desc {
+    font-size: 0.9375rem;
+  }
+}
+
+/* ═══════════════════════════════════════════════
+   BREAKPOINT: Wide Desktop (1280px+)
+   ═══════════════════════════════════════════════ */
+@media (min-width: 1280px) {
+  .fake-slider {
+    height: 300px;
+  }
+
+  .slider-title {
+    font-size: 2rem;
+  }
+
+  .slider-desc {
+    font-size: 1.1rem;
+  }
+
+  .promo-grid {
+    max-width: 960px;
+  }
+}
+
+/* ═══════════════════════════════════════════════
+   SAFE AREA (notch / dynamic island)
+   ═══════════════════════════════════════════════ */
+@supports (padding-top: env(safe-area-inset-top)) {
+  .igaming-header {
+    padding-top: env(safe-area-inset-top);
+  }
+
+  .igaming-footer {
+    padding-bottom: calc(16px + env(safe-area-inset-bottom));
   }
 }
