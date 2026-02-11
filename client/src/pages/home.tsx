@@ -7,31 +7,44 @@ interface ActiveUsersData {
   tz: string;
 }
 
+function formatNumber(value: number): string {
+  return value.toLocaleString("tr-TR");
+}
+
 function useActiveUsers() {
-  const [data, setData] = useState<ActiveUsersData | null>(null);
-  const [previousValue, setPreviousValue] = useState<number | null>(null);
+  const [displayValue, setDisplayValue] = useState<string>("---");
   const [isGlowing, setIsGlowing] = useState(false);
   const eventSourceRef = useRef<EventSource | null>(null);
   const pollingRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const glowTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const lastValueRef = useRef<number | null>(null);
+  const lastSlotRef = useRef<number | null>(null);
 
   const handleNewData = useCallback((newData: ActiveUsersData) => {
-    setData((prev) => {
-      if (prev && newData.value > prev.value) {
+    if (newData.slotKey === lastSlotRef.current) return;
+    lastSlotRef.current = newData.slotKey;
+
+    const prev = lastValueRef.current;
+    lastValueRef.current = newData.value;
+
+    setDisplayValue(formatNumber(newData.value));
+
+    if (prev !== null && newData.value > prev) {
+      if (!glowTimeoutRef.current) {
         setIsGlowing(true);
-        if (glowTimeoutRef.current) clearTimeout(glowTimeoutRef.current);
-        glowTimeoutRef.current = setTimeout(() => setIsGlowing(false), 1500);
+        glowTimeoutRef.current = setTimeout(() => {
+          setIsGlowing(false);
+          glowTimeoutRef.current = null;
+        }, 1500);
       }
-      setPreviousValue(prev?.value ?? null);
-      return newData;
-    });
+    }
   }, []);
 
   const fetchInitial = useCallback(async () => {
     try {
       const res = await fetch("/api/active-users");
       if (res.ok) {
-        const json = await res.json();
+        const json: ActiveUsersData = await res.json();
         handleNewData(json);
       }
     } catch {
@@ -44,7 +57,7 @@ function useActiveUsers() {
       try {
         const res = await fetch("/api/active-users");
         if (res.ok) {
-          const json = await res.json();
+          const json: ActiveUsersData = await res.json();
           handleNewData(json);
         }
       } catch {
@@ -62,7 +75,7 @@ function useActiveUsers() {
 
     es.onmessage = (event) => {
       try {
-        const parsed = JSON.parse(event.data);
+        const parsed: ActiveUsersData = JSON.parse(event.data);
         handleNewData(parsed);
       } catch {
       }
@@ -92,15 +105,11 @@ function useActiveUsers() {
     };
   }, [fetchInitial, connectSSE]);
 
-  return { data, previousValue, isGlowing };
-}
-
-function formatNumber(value: number): string {
-  return value.toLocaleString("tr-TR");
+  return { displayValue, isGlowing };
 }
 
 export default function Home() {
-  const { data, isGlowing } = useActiveUsers();
+  const { displayValue, isGlowing } = useActiveUsers();
 
   return (
     <div className="igaming-page" data-testid="page-home">
@@ -122,7 +131,7 @@ export default function Home() {
       </div>
 
       <div
-        className={`live-users ${isGlowing ? "live-users--glowing" : ""}`}
+        className="live-users"
         data-testid="section-live-users"
       >
         <span className="pulse-dot" data-testid="indicator-pulse" />
@@ -131,9 +140,10 @@ export default function Home() {
           className={`number ${isGlowing ? "glow-green" : ""}`}
           data-testid="text-active-count"
         >
-          {data ? formatNumber(data.value) : "---"}
+          {displayValue}
         </span>
         <span className="live-users-label">kullanıcı</span>
+        <span className={`live-users-glow-ring ${isGlowing ? "live-users-glow-ring--active" : ""}`} />
       </div>
 
       <div className="fake-promo" data-testid="section-promo">

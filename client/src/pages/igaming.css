@@ -122,16 +122,19 @@
   margin: 0;
 }
 
-/* ── LIVE USERS PILL ── */
+/* ══════════════════════════════════════════
+   LIVE USERS PILL
+   - Uses opacity-based glow overlay instead of box-shadow animation to avoid repaints
+   - tabular-nums prevents width jitter on number changes
+   - contain: layout style paint isolates repaints to pill only
+   ══════════════════════════════════════════ */
 .live-users {
   margin: clamp(10px, 3vw, 24px) auto;
   padding: clamp(6px, 2vw, 12px) clamp(10px, 3.5vw, 36px);
-  background: rgba(20, 20, 20, 0.82);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  background: rgba(20, 20, 20, 0.85);
   border-radius: 999px;
   border: 1px solid rgba(255, 215, 0, 0.28);
-  box-shadow: 0 0 clamp(8px, 2.5vw, 12px) rgba(255, 215, 0, 0.35), inset 0 1px 3px rgba(255, 255, 255, 0.06);
+  box-shadow: 0 0 12px rgba(255, 215, 0, 0.35), inset 0 1px 3px rgba(255, 255, 255, 0.06);
   color: #ffd700;
   font-size: clamp(0.6875rem, 2.8vw, 1.0625rem);
   font-weight: 500;
@@ -142,23 +145,21 @@
   display: flex;
   align-items: center;
   gap: clamp(4px, 1.5vw, 10px);
-  animation: subtle-pulse 4s infinite ease-in-out;
-  transition: box-shadow 0.4s ease;
+  position: relative;
+  isolation: isolate;
+  contain: layout style paint;
   padding-left: max(clamp(10px, 3.5vw, 36px), env(safe-area-inset-left, 0px));
   padding-right: max(clamp(10px, 3.5vw, 36px), env(safe-area-inset-right, 0px));
-}
-
-.live-users--glowing {
-  box-shadow: 0 0 clamp(16px, 5vw, 24px) rgba(0, 255, 157, 0.5), 0 0 clamp(8px, 2.5vw, 12px) rgba(255, 215, 0, 0.35), inset 0 1px 3px rgba(255, 255, 255, 0.06);
 }
 
 .live-users .number {
   color: #ffff00;
   font-weight: 700;
   font-size: clamp(0.8125rem, 3.2vw, 1.25rem);
-  transition: color 0.8s, text-shadow 0.4s;
+  transition: color 0.6s ease, text-shadow 0.6s ease;
   min-width: clamp(36px, 10vw, 60px);
   text-align: center;
+  font-variant-numeric: tabular-nums;
 }
 
 .live-users .pulse-dot {
@@ -169,6 +170,7 @@
   box-shadow: 0 0 clamp(6px, 2vw, 10px) #00ff9d;
   animation: blink 1.6s infinite;
   flex-shrink: 0;
+  will-change: opacity;
 }
 
 .live-users-label {
@@ -177,16 +179,24 @@
 
 .glow-green {
   color: #00ff9d !important;
-  text-shadow: 0 0 clamp(8px, 3vw, 12px) rgba(0, 255, 157, 0.6);
+  text-shadow: 0 0 10px rgba(0, 255, 157, 0.6);
 }
 
-@keyframes subtle-pulse {
-  0%, 100% {
-    box-shadow: 0 0 12px rgba(255, 215, 0, 0.35), inset 0 1px 3px rgba(255, 255, 255, 0.06);
-  }
-  50% {
-    box-shadow: 0 0 20px rgba(255, 215, 0, 0.55), inset 0 1px 3px rgba(255, 255, 255, 0.06);
-  }
+.live-users-glow-ring {
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: -1;
+  box-shadow: 0 0 18px 4px rgba(255, 215, 0, 0.4);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  will-change: opacity;
+}
+
+.live-users-glow-ring--active {
+  opacity: 1;
+  box-shadow: 0 0 22px 6px rgba(0, 255, 157, 0.45), 0 0 12px rgba(255, 215, 0, 0.3);
 }
 
 @keyframes blink {
@@ -519,6 +529,24 @@
 
   .promo-grid {
     max-width: 960px;
+  }
+}
+
+/* ═══════════════════════════════════════════════
+   Reduced motion: disable animations for users who prefer it
+   ═══════════════════════════════════════════════ */
+@media (prefers-reduced-motion: reduce) {
+  .live-users .pulse-dot {
+    animation: none;
+    opacity: 1;
+  }
+
+  .live-users-glow-ring {
+    transition: none;
+  }
+
+  .glow-green {
+    text-shadow: none;
   }
 }
 
