@@ -6,16 +6,25 @@ An iGaming-themed "Live Active Users" counter that displays a synchronized activ
 ## Architecture
 - **Frontend**: React SPA with custom iGaming dark theme CSS
 - **Backend**: Express with SSE broadcasting
-- **Sync mechanism**: 45-second time slots, deterministic number computation based on Istanbul timezone
+- **Sync mechanism**: 1-second time slots, deterministic number computation based on Istanbul timezone
 - **No database required**: Numbers are deterministically computed from server time
 
 ## Key Features
 - Deterministic active user count based on Istanbul time (hour ranges, weekend boost)
-- SSE real-time broadcasting every 45 seconds
+- SSE real-time broadcasting every 1 second
 - Fallback to polling if SSE connection fails
 - Turkish number formatting (tr-TR locale)
-- Green glow effect when count increases
+- Throttled green glow effect when count increases (no flicker)
 - Rate limiting on API endpoints
+
+## Performance Optimizations
+- `font-variant-numeric: tabular-nums` prevents CLS from digit width changes
+- `contain: layout style paint` isolates repaints to the pill only
+- Opacity-based glow overlay (`.live-users-glow-ring`) instead of box-shadow animation
+- No `backdrop-filter` on the counter pill (expensive on mobile GPUs)
+- Glow throttling: won't re-trigger if already active
+- slotKey dedup: skips redundant SSE updates for same time slot
+- `@media (prefers-reduced-motion: reduce)` disables all animations
 
 ## API Endpoints
 - `GET /api/active-users` - Returns current active users data (JSON)
