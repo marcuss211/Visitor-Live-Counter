@@ -1,4 +1,4 @@
-# VEVOB BAHİS - Live Active Users Counter
+Live Active Users Counter
 
 iGaming temalı, gerçek zamanlı aktif kullanıcı sayacı. Tüm bağlı istemcilerde senkronize çalışır. Server-Sent Events (SSE) ile saniyede 1 güncelleme gönderir, bağlantı koparsa otomatik olarak polling moduna geçer.
 
