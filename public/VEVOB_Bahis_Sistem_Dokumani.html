@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VEVOB BAHİS - Sistem Özellikleri Dokümanı</title>
+<style>
+  @media print {
+    body { font-size: 11pt; }
+    .no-print { display: none; }
+    h1, h2, h3 { page-break-after: avoid; }
+    table { page-break-inside: avoid; }
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.7;
+    color: #1a1a2e;
+    background: #f8f9fa;
+    padding: 0;
+  }
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    background: #fff;
+    padding: 48px 56px;
+    box-shadow: 0 2px 20px rgba(0,0,0,0.08);
+  }
+  .header-bar {
+    background: linear-gradient(135deg, #0d0d0d 0%, #1a0033 50%, #0d0d0d 100%);
+    padding: 40px 56px;
+    max-width: 900px;
+    margin: 40px auto 0;
+    border-radius: 8px 8px 0 0;
+    text-align: center;
+  }
+  .header-bar h1 {
+    color: #ffd700;
+    font-size: 28px;
+    letter-spacing: 4px;
+    margin-bottom: 8px;
+  }
+  .header-bar p {
+    color: rgba(255,255,255,0.6);
+    font-size: 14px;
+  }
+  .download-btn {
+    display: inline-block;
+    background: #ffd700;
+    color: #0d0d0d;
+    padding: 10px 28px;
+    border: none;
+    border-radius: 6px;
+    font-weight: 700;
+    font-size: 14px;
+    cursor: pointer;
+    margin-top: 16px;
+    text-decoration: none;
+  }
+  .download-btn:hover { background: #e6c200; }
+  h2 {
+    font-size: 20px;
+    color: #1a0033;
+    border-bottom: 2px solid #ffd700;
+    padding-bottom: 8px;
+    margin: 36px 0 16px;
+  }
+  h3 {
+    font-size: 16px;
+    color: #330066;
+    margin: 24px 0 10px;
+  }
+  p, li { font-size: 14px; margin-bottom: 8px; }
+  ul, ol { padding-left: 24px; margin-bottom: 16px; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 12px 0 24px;
+    font-size: 13px;
+  }
+  th {
+    background: #1a0033;
+    color: #ffd700;
+    padding: 10px 14px;
+    text-align: left;
+    font-weight: 600;
+  }
+  td {
+    padding: 9px 14px;
+    border-bottom: 1px solid #eee;
+  }
+  tr:nth-child(even) td { background: #fafafa; }
+  .code-block {
+    background: #0d0d0d;
+    color: #00ff9d;
+    padding: 16px 20px;
+    border-radius: 6px;
+    font-family: 'Consolas', 'Courier New', monospace;
+    font-size: 12.5px;
+    overflow-x: auto;
+    margin: 12px 0 20px;
+    line-height: 1.6;
+    white-space: pre;
+  }
+  .badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+  }
+  .badge-green { background: rgba(0,255,157,0.15); color: #00cc7a; }
+  .badge-gold { background: rgba(255,215,0,0.15); color: #b8960f; }
+  .badge-purple { background: rgba(100,100,255,0.15); color: #5555cc; }
+  .section-box {
+    background: #f4f0ff;
+    border-left: 4px solid #330066;
+    padding: 16px 20px;
+    margin: 16px 0;
+    border-radius: 0 6px 6px 0;
+  }
+  .diagram {
+    background: #0d0d0d;
+    color: #e0e0e0;
+    padding: 20px 24px;
+    border-radius: 6px;
+    font-family: 'Consolas', monospace;
+    font-size: 12px;
+    overflow-x: auto;
+    margin: 12px 0 20px;
+    line-height: 1.5;
+    white-space: pre;
+  }
+  .highlight { color: #ffd700; font-weight: 600; }
+  .green { color: #00ff9d; }
+  .toc { background: #fafafa; padding: 20px 28px; border-radius: 6px; margin-bottom: 32px; }
+  .toc a { color: #330066; text-decoration: none; }
+  .toc a:hover { text-decoration: underline; }
+  .toc ol { margin-bottom: 0; }
+  .toc li { margin-bottom: 4px; }
+  .footer-doc {
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+    text-align: center;
+    color: #999;
+    font-size: 12px;
+  }
+  @media (max-width: 700px) {
+    .container { padding: 24px 20px; }
+    .header-bar { padding: 28px 20px; margin-top: 0; border-radius: 0; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header-bar">
+  <h1>VEVOB | BAHİS</h1>
+  <p>Live Active Users Counter &mdash; Sistem Özellikleri Dokümanı</p>
+  <button class="download-btn no-print" onclick="window.print()">Yazdır / PDF Olarak İndir</button>
+</div>
+
+<div class="container">
+
+<div class="toc">
+  <strong>İÇİNDEKİLER</strong>
+  <ol>
+    <li><a href="#s1">Proje Tanımı ve Amacı</a></li>
+    <li><a href="#s2">Sistem Mimarisi</a></li>
+    <li><a href="#s3">Teknoloji Yığını</a></li>
+    <li><a href="#s4">Backend Özellikleri</a></li>
+    <li><a href="#s5">Frontend Özellikleri</a></li>
+    <li><a href="#s6">Sayı Hesaplama Algoritması</a></li>
+    <li><a href="#s7">Saat Aralıkları ve Trafik Tablosu</a></li>
+    <li><a href="#s8">SSE (Server-Sent Events) Sistemi</a></li>
+    <li><a href="#s9">Fallback Polling Mekanizması</a></li>
+    <li><a href="#s10">Glow Efekti ve Throttle Sistemi</a></li>
+    <li><a href="#s11">Performans Optimizasyonları</a></li>
+    <li><a href="#s12">Responsive Tasarım ve Breakpoint'ler</a></li>
+    <li><a href="#s13">iPhone / Safe Area Desteği</a></li>
+    <li><a href="#s14">Erişilebilirlik (Accessibility)</a></li>
+    <li><a href="#s15">Güvenlik Özellikleri</a></li>
+    <li><a href="#s16">API Referansı</a></li>
+    <li><a href="#s17">Dosya Yapısı</a></li>
+    <li><a href="#s18">Yapılandırma ve Özelleştirme</a></li>
+    <li><a href="#s19">Entegrasyon Yöntemleri</a></li>
+  </ol>
+</div>
+
+<!-- ═══════════ 1. PROJE TANIMI ═══════════ -->
+<h2 id="s1">1. Proje Tanımı ve Amacı</h2>
+<p>Bu proje, iGaming (online bahis) siteleri için tasarlanmış bir <strong>canlı aktif kullanıcı sayacı</strong> bileşenidir. Sayfa üzerinde anlık olarak kaç kullanıcının sitede aktif olduğunu gösteren, gerçek zamanlı güncellenen bir sayaç sunar.</p>
+
+<div class="section-box">
+  <strong>Temel Prensip:</strong> Sayılar gerçek kullanıcı verisine dayanmaz. İstanbul saat dilimine göre deterministik olarak hesaplanır. Aynı anda bağlanan tüm istemciler aynı sayıyı görür. Veritabanı gerektirmez.
+</div>
+
+<h3>Amaçlar</h3>
+<ul>
+  <li>Ziyaretçilere sitenin "canlı" ve yoğun olduğu izlenimini vermek</li>
+  <li>Saat dilimine göre gerçekçi trafik simülasyonu (gece az, akşam çok)</li>
+  <li>Tüm cihazlarda sorunsuz, performanslı çalışma</li>
+  <li>Sıfır veritabanı bağımlılığı ile kolay dağıtım</li>
+</ul>
+
+<!-- ═══════════ 2. MİMARİ ═══════════ -->
+<h2 id="s2">2. Sistem Mimarisi</h2>
+
+<div class="diagram">┌─────────────────────────────────────────────────────┐
+│                     TARAYICI (Client)                │
+│                                                       │
+│   useActiveUsers() React Hook                         │
+│     ├── EventSource("/events")   ← SSE bağlantısı    │
+│     ├── fetch("/api/active-users") ← Fallback HTTP   │
+│     ├── slotKey karşılaştırması    ← Dedup filtre    │
+│     └── glow throttle (1.5s)       ← Titreme önleme  │
+│                                                       │
+│   Render: Header → Slider → [SAYAÇ] → Promo → Footer │
+└──────────────────────┬──────────────────────────────┘
+                       │ SSE Stream / HTTP
+┌──────────────────────▼──────────────────────────────┐
+│                     SUNUCU (Server)                   │
+│                                                       │
+│   Express.js HTTP Server (Port 5000)                  │
+│     ├── GET /events           → SSE akışı             │
+│     ├── GET /api/active-users → JSON snapshot         │
+│     └── GET /health           → Sağlık kontrolü       │
+│                                                       │
+│   Active Users Engine (activeUsers.ts)                │
+│     ├── getIstanbulTime()     → Saat/Dakika/Saniye    │
+│     ├── getHourRange()        → Min/Max/Base aralığı  │
+│     ├── computeActiveUsers()  → Deterministik hesap   │
+│     ├── Slot Store (Map)      → Son 10 slot cache     │
+│     ├── SSE Clients (Set)     → Bağlı istemci listesi │
+│     └── setInterval(1000ms)   → Her saniye broadcast  │
+│                                                       │
+│   Rate Limiter                                        │
+│     └── IP başına 60 istek / dakika                   │
+└─────────────────────────────────────────────────────┘</div>
+
+<h3>Veri Akış Sırası</h3>
+<ol>
+  <li>Kullanıcı sayfayı açar</li>
+  <li>Frontend <code>/api/active-users</code> ile ilk değeri alır</li>
+  <li>Aynı anda <code>/events</code> SSE bağlantısı kurulur</li>
+  <li>Sunucu her saniye yeni sayıyı hesaplar ve tüm istemcilere yayınlar</li>
+  <li>Frontend gelen veriyi ekranda günceller</li>
+  <li>Sayı artmışsa yeşil glow efekti tetiklenir (1.5s, throttled)</li>
+  <li>SSE bağlantısı koparsa otomatik polling'e geçilir, 5 saniye sonra SSE tekrar denenir</li>
+</ol>
+
+<!-- ═══════════ 3. TEKNOLOJİ ═══════════ -->
+<h2 id="s3">3. Teknoloji Yığını</h2>
+
+<table>
+  <tr><th>Katman</th><th>Teknoloji</th><th>Sürüm</th><th>Kullanım Amacı</th></tr>
+  <tr><td>Frontend Framework</td><td>React</td><td>18.3</td><td>UI bileşenleri ve state yönetimi</td></tr>
+  <tr><td>Dil</td><td>TypeScript</td><td>5.6</td><td>Tip güvenliği</td></tr>
+  <tr><td>Build Tool</td><td>Vite</td><td>7.3</td><td>Dev server ve HMR</td></tr>
+  <tr><td>Backend</td><td>Express</td><td>5.0</td><td>HTTP sunucu ve SSE</td></tr>
+  <tr><td>Runtime</td><td>Node.js</td><td>20+</td><td>Sunucu tarafı çalışma ortamı</td></tr>
+  <tr><td>Stil</td><td>Vanilla CSS</td><td>-</td><td>Custom iGaming dark theme</td></tr>
+  <tr><td>Gerçek Zamanlı</td><td>SSE (Server-Sent Events)</td><td>-</td><td>Sunucudan istemciye tek yönlü akış</td></tr>
+  <tr><td>Production Build</td><td>esbuild</td><td>0.25</td><td>Hızlı production derlemesi</td></tr>
+</table>
+
+<div class="section-box">
+  <strong>Neden SSE (WebSocket değil)?</strong> Bu uygulama tek yönlü veri akışı gerektirir (sunucu → istemci). SSE, WebSocket'e göre daha hafif, proxy/CDN uyumlu ve HTTP/2 ile multiplexing desteği sunar. Otomatik yeniden bağlanma özelliği de tarayıcıda yerleşiktir.
+</div>
+
+<!-- ═══════════ 4. BACKEND ═══════════ -->
+<h2 id="s4">4. Backend Özellikleri</h2>
+
+<h3>4.1 Express Sunucu</h3>
+<ul>
+  <li>Port 5000'de çalışır (frontend ve backend aynı port)</li>
+  <li>Vite dev server development modda middleware olarak entegre</li>
+  <li>Production'da statik dosyalar <code>dist/public</code> klasöründen sunulur</li>
+</ul>
+
+<h3>4.2 Active Users Engine</h3>
+<ul>
+  <li>Sunucu başlatıldığında <code>initActiveUsersEngine()</code> ile motor çalışır</li>
+  <li>Her 1000ms'de bir <code>setInterval</code> ile yeni slot kontrol edilir</li>
+  <li>Yeni slot varsa sayı hesaplanır ve tüm SSE istemcilerine broadcast edilir</li>
+  <li>Son 10 slot bellekte cache'lenir, eskiler otomatik temizlenir</li>
+</ul>
+
+<h3>4.3 SSE Yönetimi</h3>
+<ul>
+  <li>Bağlanan istemciler <code>Set&lt;Response&gt;</code> koleksiyonunda tutulur</li>
+  <li>İstemci bağlantıyı kapattığında (<code>close</code> event) otomatik temizlenir</li>
+  <li>30 saniyede bir <code>:ping</code> keep-alive mesajı gönderilir</li>
+  <li><code>X-Accel-Buffering: no</code> header'ı ile Nginx proxy uyumlu</li>
+  <li>Broadcast sırasında hata veren istemciler otomatik çıkarılır</li>
+</ul>
+
+<h3>4.4 Rate Limiting</h3>
+<ul>
+  <li>IP bazlı, bellekte (in-memory) rate limiting</li>
+  <li>Dakikada maksimum 60 istek</li>
+  <li>Aşıldığında HTTP 429 (Too Many Requests) döner</li>
+  <li>Her dakika süresi dolan IP kayıtları temizlenir</li>
+  <li>Hem <code>/api/active-users</code> hem <code>/events</code> endpoint'lerine uygulanır</li>
+</ul>
+
+<!-- ═══════════ 5. FRONTEND ═══════════ -->
+<h2 id="s5">5. Frontend Özellikleri</h2>
+
+<h3>5.1 Sayfa Yapısı</h3>
+<table>
+  <tr><th>Bileşen</th><th>CSS Sınıfı</th><th>Açıklama</th></tr>
+  <tr><td>Header</td><td><code>.igaming-header</code></td><td>Altın renkli VEVOB | BAHİS logosu, sticky pozisyon</td></tr>
+  <tr><td>Slider / Hero</td><td><code>.fake-slider</code></td><td>Mor gradient arka plan, "CANLI" badge, slider placeholder</td></tr>
+  <tr><td>Aktif Kullanıcı Sayacı</td><td><code>.live-users</code></td><td>Pill şeklinde sayaç, yeşil pulse dot, glow efekti</td></tr>
+  <tr><td>Promo Kartları</td><td><code>.fake-promo</code></td><td>3 adet promosyon kartı (Free Spin, Turnuva, Bonus)</td></tr>
+  <tr><td>Footer</td><td><code>.igaming-footer</code></td><td>18+ sorumlu oyun uyarısı</td></tr>
+</table>
+
+<h3>5.2 useActiveUsers() Hook</h3>
+<p>Tüm gerçek zamanlı iletişim mantığını kapsülleyen React hook:</p>
+
+<table>
+  <tr><th>State / Ref</th><th>Tip</th><th>Amaç</th></tr>
+  <tr><td><code>displayValue</code></td><td>string</td><td>Ekranda gösterilen formatlı sayı ("4.250")</td></tr>
+  <tr><td><code>isGlowing</code></td><td>boolean</td><td>Yeşil glow efekti aktif mi</td></tr>
+  <tr><td><code>eventSourceRef</code></td><td>EventSource</td><td>SSE bağlantısı referansı</td></tr>
+  <tr><td><code>pollingRef</code></td><td>Interval ID</td><td>Fallback polling timer</td></tr>
+  <tr><td><code>glowTimeoutRef</code></td><td>Timeout ID</td><td>Glow throttle timer (1.5s)</td></tr>
+  <tr><td><code>lastValueRef</code></td><td>number</td><td>Önceki sayı değeri (artış tespiti)</td></tr>
+  <tr><td><code>lastSlotRef</code></td><td>number</td><td>Son işlenen slot key (dedup)</td></tr>
+</table>
+
+<h3>5.3 Sayı Formatı</h3>
+<p>Türkçe locale ile formatlanır: <code>value.toLocaleString("tr-TR")</code></p>
+<ul>
+  <li>4250 → <strong>4.250</strong></li>
+  <li>5800 → <strong>5.800</strong></li>
+  <li>900 → <strong>900</strong></li>
+</ul>
+
+<h3>5.4 Renk Paleti</h3>
+<table>
+  <tr><th>Renk</th><th>Hex</th><th>Kullanım</th></tr>
+  <tr><td style="background:#0d0d0d;width:30px;"></td><td>#0d0d0d</td><td>Sayfa arka planı</td></tr>
+  <tr><td style="background:#000;width:30px;"></td><td>#000000</td><td>Header arka planı</td></tr>
+  <tr><td style="background:#111;width:30px;"></td><td>#111111</td><td>Promo bölümü arka planı</td></tr>
+  <tr><td style="background:#ffd700;width:30px;"></td><td>#ffd700</td><td>Altın - Logo, kenarlıklar, vurgular</td></tr>
+  <tr><td style="background:#ffff00;width:30px;"></td><td>#ffff00</td><td>Sarı - Sayaç numarası</td></tr>
+  <tr><td style="background:#00ff9d;width:30px;"></td><td>#00ff9d</td><td>Neon yeşil - Pulse dot, glow</td></tr>
+  <tr><td style="background:#ff003c;width:30px;"></td><td>#ff003c</td><td>Kırmızı - "CANLI" badge</td></tr>
+  <tr><td style="background:#8888ff;width:30px;"></td><td>#8888ff</td><td>Mavi-mor - Bonus ikonu</td></tr>
+</table>
+
+<!-- ═══════════ 6. ALGORİTMA ═══════════ -->
+<h2 id="s6">6. Sayı Hesaplama Algoritması</h2>
+
+<p>Hesaplama 4 adımdan oluşur:</p>
+
+<h3>Adım 1: İstanbul Saatini Al</h3>
+<div class="code-block">const { hour, minute, second, weekday } = getIstanbulTime();
+// Intl.DateTimeFormat ile Europe/Istanbul zaman dilimi kullanılır
+// Sunucu nerede olursa olsun İstanbul saatine göre hesap yapar</div>
+
+<h3>Adım 2: Saat Aralığına Göre Base Değeri Belirle</h3>
+<div class="code-block">const range = getHourRange(hour);
+// Örn: saat 21 → { min: 4500, max: 5800, base: 5150 }</div>
+
+<h3>Adım 3: Hafta Sonu Artışı Uygula</h3>
+<div class="code-block">if (isWeekend) {  // Cumartesi veya Pazar
+  min  = Math.round(min * 1.2);   // %20 artış
+  max  = Math.round(max * 1.2);
+  base = Math.round(base * 1.2);
+}</div>
+
+<h3>Adım 4: Trigonometrik Dalgalanma Ekle</h3>
+<div class="code-block">const fluctuation =
+  Math.sin((hour * 60 + minute) * 0.07) * 250 +   // Yavaş dalga (±250)
+  Math.cos((minute * 60 + second) * 0.03) * 150;   // Hızlı dalga (±150)
+
+let displayed = Math.round(base + fluctuation);
+displayed = Math.max(min, Math.min(max, displayed));  // Aralığa clamp
+displayed = Math.max(900, displayed);                  // Minimum 900</div>
+
+<div class="section-box">
+  <strong>Neden Trigonometrik?</strong> <code>sin()</code> ve <code>cos()</code> fonksiyonları sürekli ve pürüzsüz dalgalanma üretir. Rastgele sayı kullanılsaydı her saniye ani sıçramalar olurdu. Trigonometrik fonksiyonlar doğal, akıcı hareket sağlar.
+</div>
+
+<!-- ═══════════ 7. SAAT ARALIKLARI ═══════════ -->
+<h2 id="s7">7. Saat Aralıkları ve Trafik Tablosu</h2>
+
+<h3>Hafta İçi (Pazartesi - Cuma)</h3>
+<table>
+  <tr><th>Saat (İstanbul)</th><th>Minimum</th><th>Maksimum</th><th>Ortalama (Base)</th><th>Profil</th></tr>
+  <tr><td>00:00 - 03:00</td><td>2.800</td><td>4.200</td><td>3.500</td><td>Gece kuşları</td></tr>
+  <tr><td>03:00 - 06:00</td><td>900</td><td>1.800</td><td>1.350</td><td>En düşük trafik</td></tr>
+  <tr><td>06:00 - 09:00</td><td>1.300</td><td>2.200</td><td>1.750</td><td>Sabah uyanış</td></tr>
+  <tr><td>09:00 - 12:00</td><td>1.900</td><td>3.000</td><td>2.450</td><td>Sabah trafiği</td></tr>
+  <tr><td>12:00 - 15:00</td><td>2.400</td><td>3.500</td><td>2.950</td><td>Öğlen molası</td></tr>
+  <tr><td>15:00 - 18:00</td><td>3.000</td><td>4.200</td><td>3.600</td><td>Öğleden sonra</td></tr>
+  <tr><td>18:00 - 20:00</td><td>3.800</td><td>5.000</td><td>4.400</td><td>Akşam yoğunluğu</td></tr>
+  <tr><td style="font-weight:700">20:00 - 23:00</td><td style="font-weight:700">4.500</td><td style="font-weight:700">5.800</td><td style="font-weight:700">5.150</td><td><span class="badge badge-gold">PIK SAAT</span></td></tr>
+  <tr><td>23:00 - 00:00</td><td>3.400</td><td>4.600</td><td>4.000</td><td>Gece geçişi</td></tr>
+</table>
+
+<h3>Hafta Sonu (Cumartesi - Pazar) &mdash; Tüm değerler x1.2</h3>
+<table>
+  <tr><th>Saat (İstanbul)</th><th>Minimum</th><th>Maksimum</th><th>Ortalama (Base)</th></tr>
+  <tr><td>00:00 - 03:00</td><td>3.360</td><td>5.040</td><td>4.200</td></tr>
+  <tr><td>03:00 - 06:00</td><td>1.080</td><td>2.160</td><td>1.620</td></tr>
+  <tr><td>06:00 - 09:00</td><td>1.560</td><td>2.640</td><td>2.100</td></tr>
+  <tr><td>09:00 - 12:00</td><td>2.280</td><td>3.600</td><td>2.940</td></tr>
+  <tr><td>12:00 - 15:00</td><td>2.880</td><td>4.200</td><td>3.540</td></tr>
+  <tr><td>15:00 - 18:00</td><td>3.600</td><td>5.040</td><td>4.320</td></tr>
+  <tr><td>18:00 - 20:00</td><td>4.560</td><td>6.000</td><td>5.280</td></tr>
+  <tr><td style="font-weight:700">20:00 - 23:00</td><td style="font-weight:700">5.400</td><td style="font-weight:700">6.960</td><td style="font-weight:700">6.180</td></tr>
+  <tr><td>23:00 - 00:00</td><td>4.080</td><td>5.520</td><td>4.800</td></tr>
+</table>
+
+<!-- ═══════════ 8. SSE ═══════════ -->
+<h2 id="s8">8. SSE (Server-Sent Events) Sistemi</h2>
+
+<h3>Sunucu Tarafı</h3>
+<ul>
+  <li>Endpoint: <code>GET /events</code></li>
+  <li>Content-Type: <code>text/event-stream</code></li>
+  <li>Her 1 saniyede bir yeni veri gönderilir</li>
+  <li>30 saniyede bir <code>:ping</code> keep-alive mesajı</li>
+  <li>Bağlantı koptuğunda istemci listeden otomatik çıkarılır</li>
+</ul>
+
+<h3>Mesaj Formatı</h3>
+<div class="code-block">data: {"value":4250,"slotKey":1770825000,"serverTime":"2026-02-11T18:50:00.000Z","tz":"Europe/Istanbul"}
+
+</div>
+
+<table>
+  <tr><th>Alan</th><th>Tip</th><th>Açıklama</th></tr>
+  <tr><td><code>value</code></td><td>number</td><td>Hesaplanan aktif kullanıcı sayısı</td></tr>
+  <tr><td><code>slotKey</code></td><td>number</td><td>Zaman dilimi kimliği (Math.floor(Date.now() / 1000))</td></tr>
+  <tr><td><code>serverTime</code></td><td>string</td><td>İstanbul saatinde ISO 8601 formatı</td></tr>
+  <tr><td><code>tz</code></td><td>string</td><td>Zaman dilimi: "Europe/Istanbul"</td></tr>
+</table>
+
+<h3>İstemci Tarafı</h3>
+<div class="code-block">const es = new EventSource("/events");
+
+es.onmessage = (event) => {
+  const data = JSON.parse(event.data);
+  // data.slotKey ile dedup kontrolü
+  // data.value ile sayaç güncelleme
+};
+
+es.onerror = () => {
+  es.close();
+  // Polling moduna geç
+  // 5 saniye sonra SSE'yi tekrar dene
+};</div>
+
+<!-- ═══════════ 9. FALLBACK ═══════════ -->
+<h2 id="s9">9. Fallback Polling Mekanizması</h2>
+
+<p>SSE bağlantısı herhangi bir nedenle koparsa otomatik olarak HTTP polling'e geçilir:</p>
+
+<div class="diagram">SSE Bağlantısı Aktif
+        │
+    SSE Hatası oluştu
+        │
+    ┌───▼───┐
+    │ SSE'yi │
+    │ kapat  │
+    └───┬───┘
+        │
+   ┌────▼────┐        ┌──────────────┐
+   │ Polling  │◄──────│ 1 saniyede    │
+   │ başlat   │       │ bir fetch     │
+   └────┬────┘        └──────────────┘
+        │
+   5 saniye bekle
+        │
+   ┌────▼────┐
+   │ SSE'yi   │── Başarılı → Polling'i durdur
+   │ tekrar   │
+   │ dene     │── Başarısız → Polling devam + 5s sonra tekrar dene
+   └─────────┘</div>
+
+<!-- ═══════════ 10. GLOW ═══════════ -->
+<h2 id="s10">10. Glow Efekti ve Throttle Sistemi</h2>
+
+<h3>Tetiklenme Koşulu</h3>
+<p>Sayaç değeri bir önceki değerden <strong>büyükse</strong> yeşil glow tetiklenir.</p>
+
+<h3>Throttle Mantığı</h3>
+<div class="diagram">Yeni sayı geldi
+      │
+  Önceki sayıdan büyük mü?
+      │
+   Hayır → Glow tetiklenMEZ
+      │
+   Evet
+      │
+  glowTimeout zaten aktif mi?
+      │
+   Evet → ATLA (throttle)
+      │
+   Hayır
+      │
+  ┌──▼──┐
+  │ Glow │ → 1.5 saniye boyunca aktif
+  │ AÇ   │
+  └──┬──┘
+     │
+  1.5s sonra
+     │
+  ┌──▼──┐
+  │ Glow │ → Timer'ı null yap (tekrar tetiklenebilir)
+  │ KAPAT│
+  └─────┘</div>
+
+<h3>Görsel Uygulama</h3>
+<ul>
+  <li><strong>Sayı rengi:</strong> <code>#ffff00</code> (sarı) → <code>#00ff9d</code> (neon yeşil) + text-shadow</li>
+  <li><strong>Pill çerçevesi:</strong> Ayrı overlay element (<code>.live-users-glow-ring</code>) ile sadece opacity geçişi</li>
+  <li>box-shadow animasyonu KULLANILMAZ (performans nedeniyle)</li>
+</ul>
+
+<!-- ═══════════ 11. PERFORMANS ═══════════ -->
+<h2 id="s11">11. Performans Optimizasyonları</h2>
+
+<table>
+  <tr><th>#</th><th>Problem</th><th>Çözüm</th><th>CSS / JS</th></tr>
+  <tr>
+    <td>1</td>
+    <td>Rakam genişliği farkından pill genişliği sıçrıyor (CLS)</td>
+    <td>Tüm rakamlar eşit genişlik</td>
+    <td><code>font-variant-numeric: tabular-nums</code></td>
+  </tr>
+  <tr>
+    <td>2</td>
+    <td>Sayı değişiminde tüm sayfa yeniden boyanıyor</td>
+    <td>Repaint'i pill ile sınırla</td>
+    <td><code>contain: layout style paint</code></td>
+  </tr>
+  <tr>
+    <td>3</td>
+    <td>box-shadow animasyonu mobilde GPU'yu zorluyor</td>
+    <td>Sadece opacity ile glow overlay</td>
+    <td><code>.live-users-glow-ring</code> + <code>opacity transition</code></td>
+  </tr>
+  <tr>
+    <td>4</td>
+    <td>backdrop-filter: blur() mobilde pahalı</td>
+    <td>Tamamen kaldırıldı</td>
+    <td>Pill'den <code>backdrop-filter</code> silindi</td>
+  </tr>
+  <tr>
+    <td>5</td>
+    <td>1 saniyelik glow sürekli tetiklenince titreme</td>
+    <td>Throttle: aktifken tekrar tetiklenme</td>
+    <td><code>glowTimeoutRef</code> kontrolü</td>
+  </tr>
+  <tr>
+    <td>6</td>
+    <td>Aynı slot için çift SSE mesajı gereksiz render</td>
+    <td>slotKey dedup kontrolü</td>
+    <td><code>if (slotKey === lastSlotRef) return</code></td>
+  </tr>
+  <tr>
+    <td>7</td>
+    <td>Pulse dot animasyonu layout tetikliyor</td>
+    <td>Compositor layer'a taşı</td>
+    <td><code>will-change: opacity</code> + sadece opacity animasyonu</td>
+  </tr>
+</table>
+
+<!-- ═══════════ 12. RESPONSIVE ═══════════ -->
+<h2 id="s12">12. Responsive Tasarım ve Breakpoint'ler</h2>
+
+<table>
+  <tr><th>Breakpoint</th><th>Hedef</th><th>Önemli Değişiklikler</th></tr>
+  <tr><td>&lt; 390px</td><td>Küçük telefonlar (iPhone SE, Galaxy A)</td><td>Minimum boyutlar, tek sütun promo kartları</td></tr>
+  <tr><td>390px+</td><td>Standart telefonlar (iPhone 13/14/15)</td><td>Header ve slider büyümesi</td></tr>
+  <tr><td>480px+</td><td>Büyük telefonlar (iPhone Plus/Max)</td><td>Promo kartları 2 sütun grid</td></tr>
+  <tr><td>768px+</td><td>Tabletler (iPad)</td><td>Promo kartları 3 sütun, hover efektleri aktif</td></tr>
+  <tr><td>1024px+</td><td>Desktop</td><td>Tam boyut header, büyük slider, büyük ikonlar</td></tr>
+  <tr><td>1280px+</td><td>Geniş desktop</td><td>Maksimum slider yüksekliği (300px)</td></tr>
+</table>
+
+<h3>clamp() ile Akıcı Ölçekleme</h3>
+<p>Breakpoint'ler arası kademeli geçiş yerine sürekli akıcı boyutlandırma:</p>
+<div class="code-block">/* Pill kenar boşluğu: 10px (320px) → 24px (1280px+) */
+margin: clamp(10px, 3vw, 24px) auto;
+
+/* Sayaç font boyutu: 0.8125rem (320px) → 1.25rem (1280px+) */
+font-size: clamp(0.8125rem, 3.2vw, 1.25rem);
+
+/* Pulse dot boyutu: 6px (320px) → 10px (1280px+) */
+width: clamp(6px, 2vw, 10px);</div>
+
+<!-- ═══════════ 13. SAFE AREA ═══════════ -->
+<h2 id="s13">13. iPhone / Safe Area Desteği</h2>
+
+<p>iPhone çentik (notch) ve Dynamic Island alanlarının içeriği kapatmaması için:</p>
+
+<div class="code-block">/* Header: çentik alanını üstten padding olarak ekle */
+.igaming-header {
+  padding-top: env(safe-area-inset-top);
+}
+
+/* Footer: alt safe area'yı ekle */
+.igaming-footer {
+  padding-bottom: calc(16px + env(safe-area-inset-bottom));
+}
+
+/* Pill: sağ/sol safe area'dan taşma önle */
+.live-users {
+  max-width: calc(100vw - 1.5rem
+    - env(safe-area-inset-left, 0px)
+    - env(safe-area-inset-right, 0px));
+  padding-left: max(clamp(...), env(safe-area-inset-left, 0px));
+  padding-right: max(clamp(...), env(safe-area-inset-right, 0px));
+}</div>
+
+<!-- ═══════════ 14. ERİŞİLEBİLİRLİK ═══════════ -->
+<h2 id="s14">14. Erişilebilirlik (Accessibility)</h2>
+
+<h3>Reduced Motion</h3>
+<p>Kullanıcı sistem ayarlarından "hareketi azalt" seçeneğini aktifleştirmişse:</p>
+<div class="code-block">@media (prefers-reduced-motion: reduce) {
+  .pulse-dot   { animation: none; opacity: 1; }
+  .glow-ring   { transition: none; }
+  .glow-green  { text-shadow: none; }
+}</div>
+
+<h3>Diğer Erişilebilirlik Özellikleri</h3>
+<ul>
+  <li>Yüksek kontrast renk paleti (koyu arka plan, parlak renkler)</li>
+  <li>Minimum dokunma hedefi boyutları (44px+ promo ikonları)</li>
+  <li><code>-webkit-tap-highlight-color: transparent</code> ile mobil dokunma geri bildirimi</li>
+  <li>Semantik HTML yapısı (<code>&lt;header&gt;</code>, <code>&lt;footer&gt;</code>)</li>
+</ul>
+
+<!-- ═══════════ 15. GÜVENLİK ═══════════ -->
+<h2 id="s15">15. Güvenlik Özellikleri</h2>
+
+<table>
+  <tr><th>Özellik</th><th>Detay</th></tr>
+  <tr><td>Rate Limiting</td><td>IP başına dakikada 60 istek sınırı, aşıldığında 429 döner</td></tr>
+  <tr><td>Deterministik Hesaplama</td><td>İstemci tarafından manipüle edilemez, sunucu saatine bağlı</td></tr>
+  <tr><td>SSE Temizleme</td><td>Kopan bağlantılar otomatik temizlenir, bellek sızıntısı önlenir</td></tr>
+  <tr><td>Slot Cache Limiti</td><td>Bellekte en fazla 10 slot tutulur (20'yi aşınca eski 10'u siler)</td></tr>
+  <tr><td>Rate Limit Map Temizliği</td><td>Süresi dolan IP kayıtları her dakika temizlenir</td></tr>
+  <tr><td>Keep-Alive</td><td>30 saniye keep-alive ile zombi bağlantılar tespit edilir</td></tr>
+</table>
+
+<!-- ═══════════ 16. API ═══════════ -->
+<h2 id="s16">16. API Referansı</h2>
+
+<h3>GET /api/active-users</h3>
+<p>Mevcut aktif kullanıcı sayısını JSON olarak döndürür.</p>
+<div class="code-block">// İstek
+GET /api/active-users
+
+// Başarılı Yanıt (200)
+{
+  "value": 4250,
+  "slotKey": 1770825000,
+  "serverTime": "2026-02-11T18:50:00.000Z",
+  "tz": "Europe/Istanbul"
+}
+
+// Rate Limit Aşıldı (429)
+{
+  "error": "Too many requests"
+}</div>
+
+<h3>GET /events</h3>
+<p>SSE akışı. Her saniye yeni veri gönderir.</p>
+<div class="code-block">// İstek
+GET /events
+Accept: text/event-stream
+
+// Yanıt Headers
+Content-Type: text/event-stream
+Cache-Control: no-cache
+Connection: keep-alive
+X-Accel-Buffering: no
+
+// Veri Akışı (her saniye)
+data: {"value":4250,"slotKey":1770825000,...}
+
+data: {"value":4253,"slotKey":1770825001,...}
+
+// Keep-alive (her 30 saniye)
+:ping</div>
+
+<h3>GET /health</h3>
+<p>Sunucu sağlık kontrolü.</p>
+<div class="code-block">// Yanıt (200)
+{
+  "status": "ok",
+  "uptime": 3600.5,
+  "sseClients": 42
+}</div>
+
+<!-- ═══════════ 17. DOSYA YAPISI ═══════════ -->
+<h2 id="s17">17. Dosya Yapısı</h2>
+
+<div class="code-block">vevob-bahis-live-counter/
+├── client/
+│   └── src/
+│       ├── pages/
+│       │   ├── home.tsx           ← Ana sayfa + useActiveUsers hook
+│       │   └── igaming.css        ← Tüm stiller (565 satır)
+│       ├── App.tsx                ← Router
+│       └── main.tsx               ← React entry point
+│
+├── server/
+│   ├── index.ts                   ← Express sunucu başlatma
+│   ├── routes.ts                  ← API rotaları + rate limiter
+│   ├── activeUsers.ts             ← Sayı motoru + SSE broadcast
+│   └── vite.ts                    ← Vite dev server entegrasyonu
+│
+├── shared/
+│   └── schema.ts                  ← Paylaşılan tip tanımları
+│
+├── package.json
+├── tsconfig.json
+├── vite.config.ts
+└── README.md</div>
+
+<!-- ═══════════ 18. YAPILANDIRMA ═══════════ -->
+<h2 id="s18">18. Yapılandırma ve Özelleştirme</h2>
+
+<h3>Saat Aralıklarını Değiştirme</h3>
+<p>Dosya: <code>server/activeUsers.ts</code> &mdash; <code>HOUR_RANGES</code> dizisi</p>
+<div class="code-block">// Örnek: 20:00-23:00 aralığını 6000-8000 yapmak için:
+{ start: 20, end: 23, range: { min: 6000, max: 8000, base: 7000 } }</div>
+
+<h3>Hafta Sonu Çarpanını Değiştirme</h3>
+<div class="code-block">// %50 artış için 1.2 yerine 1.5 yapın:
+if (isWeekend) {
+  min = Math.round(min * 1.5);
+  max = Math.round(max * 1.5);
+  base = Math.round(base * 1.5);
+}</div>
+
+<h3>Güncelleme Sıklığını Değiştirme</h3>
+<div class="code-block">// server/activeUsers.ts:
+const SLOT_LENGTH_MS = 5000;  // 5 saniyede bir (varsayılan: 1000)
+
+// client/src/pages/home.tsx (polling interval):
+pollingRef.current = setInterval(async () => { ... }, 5000);</div>
+
+<h3>Dalgalanma Şiddetini Değiştirme</h3>
+<div class="code-block">// Daha sakin dalgalanma:
+Math.sin(...) * 100 + Math.cos(...) * 60;   // (varsayılan: 250 + 150)
+
+// Daha agresif dalgalanma:
+Math.sin(...) * 400 + Math.cos(...) * 250;</div>
+
+<h3>Minimum Kullanıcı Sayısını Değiştirme</h3>
+<div class="code-block">displayed = Math.max(1500, displayed);  // Hiçbir zaman 1500'ün altına düşmez</div>
+
+<!-- ═══════════ 19. ENTEGRASYON ═══════════ -->
+<h2 id="s19">19. Entegrasyon Yöntemleri</h2>
+
+<h3>Yöntem 1: iframe ile Gömme</h3>
+<div class="code-block">&lt;iframe
+  src="https://your-app.replit.app"
+  width="100%"
+  height="600"
+  frameborder="0"
+  style="border: none;"
+&gt;&lt;/iframe&gt;</div>
+
+<h3>Yöntem 2: Sadece API Kullanımı</h3>
+<div class="code-block">// SSE ile gerçek zamanlı
+const es = new EventSource("https://your-app.replit.app/events");
+es.onmessage = (event) => {
+  const { value } = JSON.parse(event.data);
+  document.getElementById("counter").textContent =
+    value.toLocaleString("tr-TR");
+};
+
+// veya tek seferlik fetch
+const res = await fetch("https://your-app.replit.app/api/active-users");
+const { value } = await res.json();</div>
+
+<h3>Yöntem 3: React Bileşeni Olarak</h3>
+<div class="code-block">// home.tsx dosyasından useActiveUsers() hook'unu kopyalayın
+// API URL'lerini kendi sunucunuza göre güncelleyin
+
+function MyCounter() {
+  const { displayValue, isGlowing } = useActiveUsers();
+  return (
+    &lt;span className={isGlowing ? "glow" : ""}&gt;
+      {displayValue} kullanıcı online
+    &lt;/span&gt;
+  );
+}</div>
+
+<div class="footer-doc">
+  <p>VEVOB BAHİS &mdash; Sistem Özellikleri Dokümanı</p>
+  <p>Bu doküman projenin tüm teknik özelliklerini kapsamlı olarak açıklamaktadır.</p>
+  <p>Son Güncelleme: Şubat 2026</p>
+</div>
+
+</div>
+
+</body>
+</html>

@@ -1,6 +1,8 @@
 import type { Express, Request, Response } from "express";
 import { createServer, type Server } from "http";
 import { getCurrentData, addSSEClient, getSSEClientCount, initActiveUsersEngine } from "./activeUsers";
+import path from "path";
+import fs from "fs";
 
 const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
 const RATE_LIMIT_WINDOW = 60000;
@@ -55,6 +57,24 @@ export async function registerRoutes(
 
     const data = getCurrentData();
     res.json(data);
+  });
+
+  app.get("/dokuman", (_req: Request, res: Response) => {
+    const filePath = path.resolve(process.cwd(), "public/VEVOB_Bahis_Sistem_Dokumani.html");
+    if (fs.existsSync(filePath)) {
+      res.sendFile(filePath);
+    } else {
+      res.status(404).send("Doküman bulunamadı");
+    }
+  });
+
+  app.get("/dokuman/indir", (_req: Request, res: Response) => {
+    const filePath = path.resolve(process.cwd(), "public/VEVOB_Bahis_Sistem_Dokumani.html");
+    if (fs.existsSync(filePath)) {
+      res.download(filePath, "VEVOB_Bahis_Sistem_Dokumani.html");
+    } else {
+      res.status(404).send("Doküman bulunamadı");
+    }
   });
 
   app.get("/events", (req: Request, res: Response) => {
