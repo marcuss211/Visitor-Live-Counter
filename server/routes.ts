@@ -59,9 +59,18 @@ export async function registerRoutes(
     res.json(data);
   });
 
+  const docFileName = "VEVOB_Bahis_Sistem_Dokumani.html";
+  function findDocPath(): string | undefined {
+    const candidates = [
+      path.resolve(process.cwd(), "public", docFileName),
+      path.resolve(import.meta.dirname, "public", docFileName),
+    ];
+    return candidates.find((p) => fs.existsSync(p));
+  }
+
   app.get("/dokuman", (_req: Request, res: Response) => {
-    const filePath = path.resolve(process.cwd(), "public/VEVOB_Bahis_Sistem_Dokumani.html");
-    if (fs.existsSync(filePath)) {
+    const filePath = findDocPath();
+    if (filePath) {
       res.sendFile(filePath);
     } else {
       res.status(404).send("Doküman bulunamadı");
@@ -69,9 +78,9 @@ export async function registerRoutes(
   });
 
   app.get("/dokuman/indir", (_req: Request, res: Response) => {
-    const filePath = path.resolve(process.cwd(), "public/VEVOB_Bahis_Sistem_Dokumani.html");
-    if (fs.existsSync(filePath)) {
-      res.download(filePath, "VEVOB_Bahis_Sistem_Dokumani.html");
+    const filePath = findDocPath();
+    if (filePath) {
+      res.download(filePath, docFileName);
     } else {
       res.status(404).send("Doküman bulunamadı");
     }

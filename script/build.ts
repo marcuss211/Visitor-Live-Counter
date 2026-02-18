@@ -1,6 +1,6 @@
 import { build as esbuild } from "esbuild";
 import { build as viteBuild } from "vite";
-import { rm, readFile } from "fs/promises";
+import { rm, readFile, cp, mkdir } from "fs/promises";
 
 // server deps to bundle to reduce openat(2) syscalls
 // which helps cold start times
@@ -59,6 +59,14 @@ async function buildAll() {
     external: externals,
     logLevel: "info",
   });
+
+  console.log("copying public assets...");
+  await mkdir("dist/public", { recursive: true });
+  try {
+    await cp("public/VEVOB_Bahis_Sistem_Dokumani.html", "dist/public/VEVOB_Bahis_Sistem_Dokumani.html");
+  } catch {
+    console.warn("No public document found to copy");
+  }
 }
 
 buildAll().catch((err) => {
