@@ -61,10 +61,18 @@ export async function registerRoutes(
 
   const docFileName = "VEVOB_Bahis_Sistem_Dokumani.html";
   function findDocPath(): string | undefined {
-    const candidates = [
+    const candidates: string[] = [
       path.resolve(process.cwd(), "public", docFileName),
-      path.resolve(import.meta.dirname, "public", docFileName),
     ];
+    if (typeof import.meta.dirname === "string") {
+      candidates.push(path.resolve(import.meta.dirname, "public", docFileName));
+    }
+    try {
+      candidates.push(path.resolve(path.dirname(new URL(import.meta.url).pathname), "public", docFileName));
+    } catch {}
+    if (typeof __dirname === "string") {
+      candidates.push(path.resolve(__dirname, "public", docFileName));
+    }
     return candidates.find((p) => fs.existsSync(p));
   }
 
